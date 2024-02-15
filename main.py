@@ -17,8 +17,6 @@ text = url.text
 data = json.loads(text)
 # print(type(data))
 
-
-
 @client.event
 async def on_ready():
     print(f'Se ha logeado como: {client.user}')
@@ -43,7 +41,7 @@ async def on_message(message):
         if fecha == manana :
             mensaje += noticia["country"]+", "+noticia["title"]+", Impacto: "+impacto+" "+noticia["impact"]+", fecha: "+manana+", hora: "+hora+"\n"
 
-    if message.content.startswith('$noticias'):
+    if message.content.startswith('/noticias'):
         await message.channel.send(mensaje)  
 
 client.run(TOKEN)
