@@ -22,7 +22,8 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    mensaje = ""
+    mensaje = {}
+    i = 1
     for noticia in data:
         fecha = noticia["date"].split('T')[0]
         hora = noticia["date"].split('T')[1].split('-')[0]
@@ -33,16 +34,17 @@ async def on_message(message):
         else: 
             if noticia["impact"] == "High":
                 impacto *= 3
-        if fecha == manana :
-            mensaje += "***"+noticia["country"]+"***, _"+noticia["title"]+"_, **Impacto**: "+impacto+" "+noticia["impact"]+", **fecha**: "+manana+", **hora**: "+hora+"\n"
+        if fecha >= manana and noticia["impact"] == "High":
+            mensaje[i] = "***"+noticia["country"]+"***, _"+noticia["title"]+"_, **Impacto**: "+impacto+", **fecha**: "+manana+" **hora:** "+hora
+            i += 1
 
     if message.content.startswith('/noticias'):
         try:
-            await message.channel.send(mensaje)
+            for item in mensaje:
+                await message.channel.send(mensaje[item])
         except:
             await message.channel.send("No hay noticias que mostrar")
 
         await message.channel.send('https://www.forexfactory.com/calendar')
         
-
 client.run(os.getenv('TOKEN'))
